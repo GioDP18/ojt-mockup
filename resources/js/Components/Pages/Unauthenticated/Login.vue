@@ -1,7 +1,19 @@
 <template>
+	<!-- LOADING -->
+	<div class="loading-container col-12" v-if="loading">
+		<div class="loading spinner-border" role="status">
+			<span class="visually-hidden">Loading...</span>
+		</div>
+	</div>
+	
+
+	
 	<div class="login-card">
 		<div class="form-container">
 			<p class="title">Login</p>
+			<div class="alert alert-danger" role="alert" v-if="alertMessage">
+				{{ alertMessage }}
+			</div>
 			<form class="form" @submit.prevent="handleLogin">
 				<div class="input-group">
 					<label for="email">Email</label>
@@ -74,13 +86,15 @@ export default {
 		return {
 			email: "",
 			password: "",
+      		loading: false,
+			alertMessage: "",
 		};
 	},
 
 	methods: {
-
 		async handleLogin() {
 			try {
+				this.loading = true;
 				await axios.post('http://localhost:8000/api/login', {
 					email: this.email,
 					password: this.password,
@@ -92,19 +106,27 @@ export default {
 					localStorage.setItem('valid', true);
                     this.$router.push({ name: 'home' });
 				})
-
-
+				.finally(() => {
+					this.loading = false;
+				});
 				
 			} catch (error) {
-				console.error('Login failed', error.response.data);
+				console.error('Login failed: ', error.response.data);
+				console.error('Message: ', error.response.data.message);
+				if(error.response.data.message) {
+					this.alertMessage = "Invalid Credentials.";
+				}
 			}
 		},
+
 		loginWithGoogle() {
 			console.log("Logging in with Google");
 		},
+
 		loginWithTwitter() {
 			console.log("Logging in with Twitter");
 		},
+
 		loginWithGitHub() {
 			console.log("Logging in with GitHub");
 		},
@@ -113,12 +135,35 @@ export default {
 </script>
   
 <style scoped>
+.loading-container{
+	position: absolute;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.loading-container .loading{
+	width: 4rem;
+	height: 4rem;
+	font-weight: bold;
+	color: white;
+	z-index: 1;
+}
+
 .login-card {
 	margin: 0 1rem;
 	height: 100vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	position: relative;
+}
+
+.login-card .alert{
+	width: 100%;
+	padding: 5px;
+	text-align: center;
 }
 
 .form-container {

@@ -16,38 +16,38 @@
     </head>
     <body class="antialiased" style="position:relative;">
         <!-- Spinner -->
-        <div id="loading-spinner" class="justify-content-center" style="position:absolute; height:100vh;">
-            <div class="spinner-border" role="status">
+        <div id="loading-spinner" style="position:absolute; width:100%; min-height:100vh; display:flex; justify-content:center; align-items:center;">
+            <div class="spinner-border" role="status" style="width:5rem; height:5rem;">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-            <!-- Background -->
-            <div class="area" >
-                <ul class="circles">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div >
-            
 
-            <!-- Main Content -->
-            <div id="app" style="display: none;">
+        <!-- Background -->
+        <div class="area" >
+            <ul class="circles">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div >
+        
 
-            </div>
+        <!-- Main Content -->
+        <div id="app" style="display: none;">
+            <!-- SPA content here -->
+        </div>
 
         
 
         @vite('resources/js/app.js')
         <script>
-            // Hide the spinner and show the content container when the window has fully loaded
             window.onload = function() {
                 const spinner = document.getElementById('loading-spinner');
                 const contentContainer = document.getElementById('app');

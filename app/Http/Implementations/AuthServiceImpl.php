@@ -28,7 +28,7 @@ class AuthServiceImpl implements AuthService
     public function login(AuthRequest $request){
     	$validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

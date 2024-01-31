@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="whole">
         <div class="main-content container-fluid justify-content-center" id="home">
             <!-- ======================= Home ======================= -->
             <section class="home-section">
@@ -911,6 +911,10 @@ footer{
 @media only screen and (max-width: 992px){
     .certificates-images{
         flex-direction: column;
+    }
+
+    .main-content {
+        padding-top: 8rem;
     }
 }
 
