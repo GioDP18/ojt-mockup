@@ -1,4 +1,12 @@
 <template>
+	<!-- LOADING -->
+	<div class="loading-container col-12" v-if="$store.state.loading">
+		<div class="loading spinner-border" role="status">
+			<span class="visually-hidden">Loading...</span>
+		</div>
+	</div>
+
+
 	<div class="login-card">
 		<div class="form-container">
 			<p class="title">Register</p>
@@ -65,7 +73,7 @@
 				</button>
 			</div>
 			<p class="signup">Already have an account?
-				<a rel="noopener noreferrer" href="/unauthenticated/login" class="">Sign in</a>
+				<button class="" @click="goToLogin">Sign in</button>
 			</p>
 		</div>
 	</div>
@@ -87,6 +95,8 @@ export default {
 	methods: {
 		async handleRegister() {
 			try {
+				this.$store.commit('setLoading', true);
+
 				const response = await axios.post('http://localhost:8000/api/auth/register', {
 					name: this.fullname,
 					email: this.email,
@@ -96,19 +106,31 @@ export default {
 				.then((response) => {
 					console.log(response.data);
 					localStorage.setItem('token', response.data.access_token);
+					localStorage.setItem('valid', true);
+					this.$store.commit('setLoading', false);
                     this.$router.push({ name: 'home' });
 				})
+				.finally(() => {
+					this.$store.commit('setLoading', false);
+				});
 
 			} catch (error) {
 				console.error('Registration failed', error.response.data);
 			}
 		},
+
+		goToLogin() {
+            this.$router.push({ name: 'login' });
+        },
+
 		loginWithGoogle() {
 			console.log("Logging in with Google");
 		},
+
 		loginWithTwitter() {
 			console.log("Logging in with Twitter");
 		},
+
 		loginWithGitHub() {
 			console.log("Logging in with GitHub");
 		},
@@ -117,6 +139,22 @@ export default {
 </script>
   
 <style scoped>
+.loading-container{
+	position: absolute;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.loading-container .loading{
+	width: 4rem;
+	height: 4rem;
+	font-weight: bold;
+	color: white;
+	z-index: 1;
+}
+
 .login-card {
 	margin: 0 1rem;
 	height: 100vh;
@@ -276,7 +314,6 @@ button {
 	font-size: 20px;
 }
 
-
 .button:hover {
 	width: inherit;
 	height: inherit;
@@ -287,15 +324,21 @@ button {
 	border-radius: 50%;
 }
 
-
-
-
 .signup {
 	text-align: center;
 	font-size: 0.75rem;
 	line-height: 1rem;
 	color: rgba(156, 163, 175, 1);
 }
+
+.signup button{
+	background-color: transparent;
+	font-size: 0.8rem;
+	font-weight: bold;
+	line-height: 1rem;
+	color: white
+}
+
 
 /* Responsive adjustments */
 @media screen and (max-width: 600px) {

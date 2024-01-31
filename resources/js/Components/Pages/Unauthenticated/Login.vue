@@ -1,6 +1,6 @@
 <template>
 	<!-- LOADING -->
-	<div class="loading-container col-12" v-if="loading">
+	<div class="loading-container col-12" v-if="$store.state.loading">
 		<div class="loading spinner-border" role="status">
 			<span class="visually-hidden">Loading...</span>
 		</div>
@@ -11,8 +11,8 @@
 	<div class="login-card">
 		<div class="form-container">
 			<p class="title">Login</p>
-			<div class="alert alert-danger" role="alert" v-if="alertMessage">
-				{{ alertMessage }}
+			<div class="alert alert-danger" role="alert" v-if="$store.state.alertMessage">
+				{{ $store.state.alertMessage }}
 			</div>
 			<form class="form" @submit.prevent="handleLogin">
 				<div class="input-group">
@@ -72,7 +72,7 @@
 				</button>
 			</div>
 			<p class="signup">Don't have an account?
-				<a rel="noopener noreferrer" href="/unauthenticated/register" class="">Sign up</a>
+				<button class="" @click="goToSignup">Sign up</button>
 			</p>
 		</div>
 	</div>
@@ -86,15 +86,17 @@ export default {
 		return {
 			email: "",
 			password: "",
-      		loading: false,
-			alertMessage: "",
+      		// loading: false,
+			// alertMessage: "",
 		};
 	},
 
 	methods: {
 		async handleLogin() {
 			try {
-				this.loading = true;
+				// this.loading = true;
+				this.$store.commit('setLoading', true);
+				
 				await axios.post('http://localhost:8000/api/login', {
 					email: this.email,
 					password: this.password,
@@ -107,16 +109,20 @@ export default {
                     this.$router.push({ name: 'home' });
 				})
 				.finally(() => {
-					this.loading = false;
+					this.$store.commit('setLoading', false);
 				});
 				
 			} catch (error) {
 				console.error('Login failed: ', error.response.data);
 				console.error('Message: ', error.response.data.message);
 				if(error.response.data.message) {
-					this.alertMessage = "Invalid Credentials.";
+					this.$store.commit('setAlertMessage', "Invalid Credentials.");
 				}
 			}
+		},
+
+		goToSignup() {
+			this.$router.push({ name: 'register' });
 		},
 
 		loginWithGoogle() {
@@ -129,6 +135,12 @@ export default {
 
 		loginWithGitHub() {
 			console.log("Logging in with GitHub");
+		},
+	},
+
+	computed: {
+		loading() {
+			return this.$store.state.loading;
 		},
 	},
 };
@@ -317,7 +329,6 @@ button {
 	font-size: 20px;
 }
 
-
 .button:hover {
 	width: inherit;
 	height: inherit;
@@ -328,14 +339,19 @@ button {
 	border-radius: 50%;
 }
 
-
-
-
 .signup {
 	text-align: center;
 	font-size: 0.75rem;
 	line-height: 1rem;
 	color: rgba(156, 163, 175, 1);
+}
+
+.signup button{
+	background-color: transparent;
+	font-size: 0.8rem;
+	font-weight: bold;
+	line-height: 1rem;
+	color: white
 }
 
 /* Responsive adjustments */

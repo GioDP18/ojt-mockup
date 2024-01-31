@@ -1,6 +1,6 @@
 <template>
     <!-- LOADING -->
-	<div class="loading-container col-12" v-if="loading">
+	<div class="loading-container col-12" v-if="$store.state.loading">
 		<div class="loading spinner-border" role="status">
 			<span class="visually-hidden">Loading...</span>
 		</div>
@@ -78,7 +78,7 @@ import axios from 'axios';
 export default {
     data() {
 		return {
-      		loading: false,
+      		// loading: false,
 		};
 	},
 
@@ -92,7 +92,8 @@ export default {
 
         async Logout() {
             try {
-				this.loading = true;
+				// this.loading = true;
+                this.$store.commit('setLoading', true);
                 const token = localStorage.getItem('token');
                 const headers = { Authorization: `Bearer ${token}` };
 
@@ -100,11 +101,12 @@ export default {
                 .then(response => {
                     localStorage.removeItem('token');
                     localStorage.setItem('valid', false);
-
+					this.$store.commit('setAlertMessage', "");
                     this.$router.push({ name: 'login' });
                 })
 				.finally(() => {
-					this.loading = false;
+					// this.loading = false;
+                    this.$store.commit('setLoading', false);
 				});
 
                 
