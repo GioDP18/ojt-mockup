@@ -6,51 +6,51 @@
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-lg-end" id="navbarSupportedContent">
+            <div class="collapse show navbar-collapse justify-content-lg-end" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+                    <li class="nav-item" @click="closeNavbar">
                         <a class="nav-link text-light active" aria-current="page" href="#home">
                             Home
                         </a>
                     </li>
                     <hr class="m-0">
-                    <li class="nav-item">
+                    <li class="nav-item" @click="closeNavbar">
                         <a class="nav-link text-light" href="#about">
                             About
                         </a>
                     </li>
                     <hr class="m-0">
-                    <li class="nav-item">
+                    <li class="nav-item" @click="closeNavbar">
                         <a class="nav-link text-light" href="#education">
                             Education
                         </a>
                     </li>
                     <hr class="m-0">
-                    <li class="nav-item">
+                    <li class="nav-item" @click="closeNavbar">
                         <a class="nav-link text-light" href="#honorsAwards">
                             Awards
                         </a>
                     </li>
                     <hr class="m-0">
-                    <li class="nav-item">
+                    <li class="nav-item" @click="closeNavbar">
                         <a class="nav-link text-light" href="#certificates">
                             Certificates
                         </a>
                     </li>
                     <hr class="m-0">
-                    <li class="nav-item">
+                    <li class="nav-item" @click="closeNavbar">
                         <a class="nav-link text-light" href="#skills">
                             Skills
                         </a>
                     </li>
                     <hr class="m-0">
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" @click="closeNavbar">
                         <a class="nav-link text-light" href="#projects">
                             Projects
                         </a>
                     </li>
                     <hr class="m-0">
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" @click="closeNavbar">
                         <a class="nav-link text-light" @click="Logout">
                             Logout
                         </a>
@@ -67,6 +67,13 @@ import axios from 'axios';
 
 export default {
     methods: {
+        closeNavbar() {
+            const navbar = document.querySelector('.navbar-collapse.show');
+            if (navbar) {
+                navbar.classList.remove('show');
+            }
+        },
+
         async Logout() {
             try {
                 

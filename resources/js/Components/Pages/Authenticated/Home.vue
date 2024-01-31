@@ -236,6 +236,7 @@
                                 <img class="col-lg-3" :src="'../storage/awards/cert-1.jpg'" alt="">
                                 <img class="col-lg-3" :src="'../storage/awards/cert-2.png'" alt="">
                                 <img class="col-lg-3" :src="'../storage/awards/cert-3.png'" alt="">
+                                <img class="col-lg-3" :src="'../storage/awards/cert-4.png'" alt="">
                             </div>
                         </div>
                     </div>
